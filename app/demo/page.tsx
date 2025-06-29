@@ -5,7 +5,7 @@ import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Play, Pause, Volume2, Maximize, Clock, Users, Star, ArrowLeft } from "lucide-react"
+import { Play, Clock, Users, Star, ArrowLeft } from "lucide-react"
 import Link from "next/link"
 
 const demoVideos = [
@@ -14,54 +14,57 @@ const demoVideos = [
     title: "ASET Program Overview",
     description: "Get an overview of our comprehensive AI and Data Science programs",
     duration: "5:30",
-    thumbnail: "/placeholder.svg?height=200&width=350",
     category: "Introduction",
+    youtubeId: "dQw4w9WgXcQ",
   },
   {
     id: "data-science",
     title: "Data Science Package Demo",
     description: "See what you'll learn in our Data Science program with real project examples",
     duration: "8:45",
-    thumbnail: "/placeholder.svg?height=200&width=350",
     category: "Data Science",
+    youtubeId: "9bZkp7q19f0",
   },
   {
     id: "ai-package",
     title: "AI Package Walkthrough",
     description: "Explore our Artificial Intelligence curriculum and capstone projects",
     duration: "7:20",
-    thumbnail: "/placeholder.svg?height=200&width=350",
     category: "Artificial Intelligence",
+    youtubeId: "3JZ_D3ELwOQ",
   },
   {
     id: "mentorship",
     title: "1-on-1 Mentorship Experience",
     description: "See how our personalized mentorship program works",
     duration: "4:15",
-    thumbnail: "/placeholder.svg?height=200&width=350",
     category: "Mentorship",
+    youtubeId: "L_jWHffIx5E",
   },
   {
     id: "success-stories",
     title: "Student Success Stories",
     description: "Hear from graduates who transformed their careers with ASET",
     duration: "6:30",
-    thumbnail: "/placeholder.svg?height=200&width=350",
     category: "Success Stories",
+    youtubeId: "kJQP7kiw5Fk",
   },
   {
     id: "projects",
     title: "Capstone Projects Showcase",
     description: "See the amazing projects our students build during the program",
     duration: "9:10",
-    thumbnail: "/placeholder.svg?height=200&width=350",
     category: "Projects",
+    youtubeId: "RgKAFK5djSk",
   },
 ]
 
+function getYoutubeThumbnail(youtubeId: string) {
+  return `https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg`
+}
+
 export default function DemoPage() {
   const [selectedVideo, setSelectedVideo] = useState(demoVideos[0])
-  const [isPlaying, setIsPlaying] = useState(false)
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 pt-20">
@@ -88,38 +91,13 @@ export default function DemoPage() {
             <div className="lg:col-span-2">
               <Card className="overflow-hidden">
                 <div className="relative aspect-video bg-gray-900">
-                  <img
-                    src={selectedVideo.thumbnail || "/placeholder.svg"}
-                    alt={selectedVideo.title}
-                    className="w-full h-full object-cover"
+                  <iframe
+                    src={`https://www.youtube.com/embed/${selectedVideo.youtubeId}?rel=0`}
+                    title={selectedVideo.title}
+                    className="w-full h-full"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
                   />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <Button
-                      onClick={() => setIsPlaying(!isPlaying)}
-                      size="lg"
-                      className="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white border-2 border-white/50 rounded-full w-20 h-20"
-                    >
-                      {isPlaying ? <Pause className="w-8 h-8" /> : <Play className="w-8 h-8 ml-1" />}
-                    </Button>
-                  </div>
-                  <div className="absolute bottom-4 left-4 right-4">
-                    <div className="bg-black/50 backdrop-blur-sm rounded-lg p-3">
-                      <div className="flex items-center justify-between text-white text-sm">
-                        <div className="flex items-center space-x-4">
-                          <Button variant="ghost" size="sm" className="text-white hover:bg-white/20">
-                            <Volume2 className="w-4 h-4" />
-                          </Button>
-                          <span>0:00 / {selectedVideo.duration}</span>
-                        </div>
-                        <Button variant="ghost" size="sm" className="text-white hover:bg-white/20">
-                          <Maximize className="w-4 h-4" />
-                        </Button>
-                      </div>
-                      <div className="w-full bg-white/20 rounded-full h-1 mt-2">
-                        <div className="bg-blue-500 h-1 rounded-full w-1/4"></div>
-                      </div>
-                    </div>
-                  </div>
                 </div>
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between mb-4">
@@ -173,7 +151,7 @@ export default function DemoPage() {
                         <div className="flex items-start space-x-3">
                           <div className="relative flex-shrink-0">
                             <img
-                              src={video.thumbnail || "/placeholder.svg"}
+                              src={getYoutubeThumbnail(video.youtubeId)}
                               alt={video.title}
                               className="w-16 h-12 object-cover rounded"
                             />

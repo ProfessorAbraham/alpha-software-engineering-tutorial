@@ -9,15 +9,7 @@ import { usePathname } from "next/navigation"
 
 const navItems = [
   { name: "Home", href: "/" },
-  {
-    name: "Programs",
-    href: "/programs",
-    submenu: [
-      { name: "Data Science Package", href: "/programs/data-science" },
-      { name: "AI Package", href: "/programs/artificial-intelligence" },
-      { name: "Premium Bundle", href: "/programs/premium-bundle" },
-    ],
-  },
+  { name: "Programs", href: "/programs" },
   { name: "About", href: "/about" },
   { name: "Success Stories", href: "/testimonials" },
   { name: "Contact", href: "/contact" },
@@ -26,7 +18,6 @@ const navItems = [
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
-  const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null)
   const pathname = usePathname()
 
   useEffect(() => {
@@ -58,54 +49,15 @@ export function Navigation() {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
-              <div key={item.name} className="relative group">
-                {item.submenu ? (
-                  <div
-                    className="flex items-center cursor-pointer"
-                    onMouseEnter={() => setActiveSubmenu(item.name)}
-                    onMouseLeave={() => setActiveSubmenu(null)}
-                  >
-                    <span
-                      className={`font-medium transition-colors ${
-                        pathname.startsWith(item.href) ? "text-blue-600" : "text-gray-700 hover:text-blue-600"
-                      }`}
-                    >
-                      {item.name}
-                    </span>
-                    <ChevronDown className="w-4 h-4 ml-1 text-gray-500" />
-
-                    <AnimatePresence>
-                      {activeSubmenu === item.name && (
-                        <motion.div
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: 10 }}
-                          className="absolute top-full left-0 mt-2 w-64 bg-white rounded-xl shadow-xl border border-gray-100 py-2"
-                        >
-                          {item.submenu.map((subItem) => (
-                            <Link
-                              key={subItem.name}
-                              href={subItem.href}
-                              className="block px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"
-                            >
-                              {subItem.name}
-                            </Link>
-                          ))}
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                ) : (
-                  <Link
-                    href={item.href}
-                    className={`font-medium transition-colors ${
-                      pathname === item.href ? "text-blue-600" : "text-gray-700 hover:text-blue-600"
-                    }`}
-                  >
-                    {item.name}
-                  </Link>
-                )}
-              </div>
+              <Link
+                key={item.name}
+                href={item.href}
+                className={`font-medium transition-colors ${
+                  pathname === item.href ? "text-blue-600" : "text-gray-700 hover:text-blue-600"
+                }`}
+              >
+                {item.name}
+              </Link>
             ))}
           </div>
 
@@ -146,52 +98,14 @@ export function Navigation() {
             >
               <div className="py-4 space-y-2">
                 {navItems.map((item) => (
-                  <div key={item.name}>
-                    {item.submenu ? (
-                      <div>
-                        <button
-                          onClick={() => setActiveSubmenu(activeSubmenu === item.name ? null : item.name)}
-                          className="flex items-center justify-between w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-50"
-                        >
-                          {item.name}
-                          <ChevronDown
-                            className={`w-4 h-4 transition-transform ${
-                              activeSubmenu === item.name ? "rotate-180" : ""
-                            }`}
-                          />
-                        </button>
-                        <AnimatePresence>
-                          {activeSubmenu === item.name && (
-                            <motion.div
-                              initial={{ opacity: 0, height: 0 }}
-                              animate={{ opacity: 1, height: "auto" }}
-                              exit={{ opacity: 0, height: 0 }}
-                              className="bg-gray-50"
-                            >
-                              {item.submenu.map((subItem) => (
-                                <Link
-                                  key={subItem.name}
-                                  href={subItem.href}
-                                  className="block px-8 py-2 text-gray-600 hover:text-blue-600"
-                                  onClick={() => setIsOpen(false)}
-                                >
-                                  {subItem.name}
-                                </Link>
-                              ))}
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                      </div>
-                    ) : (
-                      <Link
-                        href={item.href}
-                        className="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-blue-600"
-                        onClick={() => setIsOpen(false)}
-                      >
-                        {item.name}
-                      </Link>
-                    )}
-                  </div>
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    className="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-blue-600"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {item.name}
+                  </Link>
                 ))}
                 <div className="px-4 py-4 space-y-2 border-t border-gray-100">
                   <Link href="/contact" onClick={() => setIsOpen(false)}>

@@ -174,22 +174,15 @@ export function PackagesSection() {
                   </div>
 
                   <div className="space-y-3">
-                    <Link href={pkg.href}>
+                    <Link href={`/enroll?package=${pkg.id}`}>
                       <Button
                         className={`w-full bg-gradient-to-r ${pkg.color} hover:opacity-90 text-white py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105`}
                       >
-                        Learn More
+                        Enroll Now
                         <ArrowRight className="ml-2 w-4 h-4" />
                       </Button>
                     </Link>
-                    <Link href={`/enroll?package=${pkg.id}`}>
-                      <Button
-                        variant="outline"
-                        className="w-full border-2 border-gray-300 text-gray-700 hover:bg-gray-50 py-3 rounded-xl font-semibold bg-transparent"
-                      >
-                        Enroll Now
-                      </Button>
-                    </Link>
+                    
                   </div>
                 </div>
               </div>

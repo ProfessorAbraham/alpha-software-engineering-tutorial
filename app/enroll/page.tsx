@@ -10,6 +10,9 @@ import { ArrowLeft, Check, CreditCard, Shield, Clock, Users } from "lucide-react
 import Link from "next/link"
 import { EnrollmentForm } from "@/components/enrollment-form"
 
+// Replace with your actual Google Apps Script Web App URL
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyUjOaWr7E7ONYov2-a6VFjcdEnP9SO8vQCytwPuxanYZEgVw5lyjYdIozft-bmyS8t/exec"
+
 const packages = {
   "data-science": {
     title: "Data Science Package",
@@ -84,6 +87,7 @@ export default function EnrollPage() {
           plan: selectedPlan,
           price: currentPrice,
         }}
+        googleScriptUrl={GOOGLE_SCRIPT_URL} // Pass the script URL as a prop
         onBack={() => setShowForm(false)}
       />
     )

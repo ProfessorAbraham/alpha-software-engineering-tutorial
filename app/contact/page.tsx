@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Mail, Phone, MapPin, Clock, MessageSquare, Users, HelpCircle } from "lucide-react"
+import { Mail, Phone, MessageSquare, HelpCircle } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 
 const contactMethods = [
@@ -30,10 +30,10 @@ const contactMethods = [
   },
   {
     icon: MessageSquare,
-    title: "Live Chat",
-    description: "Instant messaging support",
-    contact: "Available on website",
-    availability: "Mon-Fri, 9 AM - 6 PM EAT",
+    title: "Telegram Chat",
+    description: "Telegram messaging support",
+    contact: "@alpha_software_enginering",
+    availability: "24/7 response within 1 hour",
   },
 ]
 
@@ -57,6 +57,9 @@ const faqItems = [
   },
 ]
 
+// Replace with your actual Google Apps Script Web App URL
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyUjOaWr7E7ONYov2-a6VFjcdEnP9SO8vQCytwPuxanYZEgVw5lyjYdIozft-bmyS8t/exec"
+
 export default function ContactPage() {
   const { toast } = useToast()
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -74,12 +77,15 @@ export default function ContactPage() {
     setIsSubmitting(true)
 
     try {
-      const response = await fetch("/api/contact", {
+      const response = await fetch(GOOGLE_SCRIPT_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          type: "contact",
+          data: formData,
+        }),
       })
 
       if (response.ok) {
@@ -143,7 +149,20 @@ export default function ContactPage() {
                     </div>
                     <h3 className="text-xl font-bold text-gray-900 mb-2">{method.title}</h3>
                     <p className="text-gray-600 mb-4">{method.description}</p>
-                    <div className="text-blue-600 font-semibold mb-2">{method.contact}</div>
+                    <div className="text-blue-600 font-semibold mb-2">
+                      {method.title === "Telegram Chat" ? (
+                        <a
+                          href={`https://t.me/${method.contact.replace(/^@/, "")}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="hover:underline"
+                        >
+                          {method.contact}
+                        </a>
+                      ) : (
+                        method.contact
+                      )}
+                    </div>
                     <div className="text-sm text-gray-500">{method.availability}</div>
                   </CardContent>
                 </Card>
@@ -265,33 +284,6 @@ export default function ContactPage() {
                       <p className="text-gray-600 text-sm">{item.answer}</p>
                     </div>
                   ))}
-                </CardContent>
-              </Card>
-
-              {/* Office Info */}
-              <Card className="mt-8">
-                <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <MapPin className="w-5 h-5 mr-2" />
-                    Visit Our Office
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div>
-                      <h4 className="font-semibold text-gray-900">ASET Headquarters</h4>
-                      <p className="text-gray-600">Addis Ababa, Ethiopia</p>
-                      <p className="text-gray-600">Bole Sub City, Woreda 03</p>
-                    </div>
-                    <div className="flex items-center text-gray-600">
-                      <Clock className="w-4 h-4 mr-2" />
-                      <span>Monday - Friday: 9:00 AM - 6:00 PM EAT</span>
-                    </div>
-                    <div className="flex items-center text-gray-600">
-                      <Users className="w-4 h-4 mr-2" />
-                      <span>Walk-ins welcome (appointment recommended)</span>
-                    </div>
-                  </div>
                 </CardContent>
               </Card>
             </motion.div>
